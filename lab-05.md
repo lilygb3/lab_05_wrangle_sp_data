@@ -1,17 +1,20 @@
 Lab 05 - La Quinta is Spanish for next to Denny’s, Pt. 2
 ================
-Insert your name here
-Insert date here
+Lily Botha
+02/17/2026
 
 ### Load packages and data
 
 ``` r
 library(tidyverse) 
 library(dsbox) 
+library(readr)
 ```
 
 ``` r
 states <- read_csv("data/states.csv")
+dennys <- read_csv("https://github.com/DataScience4Psych/DataScience4Psych/raw/main/data/raw-data/dennys.csv")
+laquinta <- read_csv("https://github.com/DataScience4Psych/DataScience4Psych/raw/main/data/raw-data/laquinta.csv")
 ```
 
 ### Exercise 1
