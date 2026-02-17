@@ -13,15 +13,31 @@ library(readr)
 
 ``` r
 states <- read_csv("data/states.csv")
-dennys <- read_csv("https://github.com/DataScience4Psych/DataScience4Psych/raw/main/data/raw-data/dennys.csv")
-laquinta <- read_csv("https://github.com/DataScience4Psych/DataScience4Psych/raw/main/data/raw-data/laquinta.csv")
+dn <- read_csv("https://github.com/DataScience4Psych/DataScience4Psych/raw/main/data/raw-data/dennys.csv")
+lq <- read_csv("https://github.com/DataScience4Psych/DataScience4Psych/raw/main/data/raw-data/laquinta.csv")
 ```
 
 ### Exercise 1
 
-Remove this text, and add your answer for Exercise 1 here. Add code
-chunks as needed. Don’t forget to label your code chunk. Do not use
-spaces in code chunk labels.
+There are 3 Denny’s locations in Alaska.
+
+``` r
+dn_ak <- dn %>%
+  filter(state == "AK")
+nrow(dn_ak)
+```
+
+    ## [1] 3
+
+There are 2 La Quinta locations in Alaska.
+
+``` r
+lq_ak <- lq %>% 
+  filter(state == "AK")
+nrow(lq_ak)
+```
+
+    ## [1] 2
 
 ### Exercise 2
 
