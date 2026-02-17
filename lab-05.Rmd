@@ -47,7 +47,13 @@ nrow(dn_ak) * nrow(lq_ak)
 
 ### Exercise 3
 
-...
+```{r}
+dn_lq_ak <- full_join(dn_ak, lq_ak, #use full_join to keep all rows and columns from both dfs
+  by = "state"
+)
+dn_lq_ak
+```
+
 
 ### Exercise 4
 
