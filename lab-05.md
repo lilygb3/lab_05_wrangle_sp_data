@@ -41,9 +41,14 @@ nrow(lq_ak)
 
 ### Exercise 2
 
-Remove this text, and add your answer for Exercise 1 here. Add code
-chunks as needed. Don’t forget to label your code chunk. Do not use
-spaces in code chunk labels.
+There are 6 pairings between all Denny’s and all La Quinta locations in
+Alaska, so we need to calculate 6 distances.
+
+``` r
+nrow(dn_ak) * nrow(lq_ak)
+```
+
+    ## [1] 6
 
 ### Exercise 3
 
