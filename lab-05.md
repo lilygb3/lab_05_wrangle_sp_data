@@ -151,11 +151,15 @@ dn_lq_ak_min_dist #print df on seperate line
     ## 5   416.  
     ## 6   420.
 
+\*add mutate min distance to find minimum distance!
+
 ### Exercise 8
 
 ``` r
 dn_lq_ak_min_dist %>% 
-  ggplot()
+  ggplot(aes(x = distance)) +
+  geom_density() +
+  labs(title = "Distribution of Minimum Distances", subtitle = "Between Denny's and La Quinta Locations", x = "Minimum Distance (miles)", y = "Density")
 ```
 
 ![](lab-05_files/figure-gfm/plot-1.png)<!-- -->
