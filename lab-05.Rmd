@@ -88,8 +88,45 @@ haversine <- function(long1, lat1, long2, lat2, round = 3) {
 
 ```{r calc-dn-lq-ak-distance}
 dn_lq_ak <- dn_lq_ak %>%
-  mutate(distance = haversine(long1 = longitude.x, lat1 = latitude.x, long2 = longitude.y, lat2 = latitude.y))
+  mutate(distance = haversine(long1 = longitude.x, lat1 = latitude.x, long2 = longitude.y, lat2 = latitude.y)) #add a distance variable using the haversine function
 ```
+
+### Exercise 7***
+
+```{r min-dist}
+dn_lq_ak_min_dist <- dn_lq_ak %>% 
+  group_by(address.x) %>% #group by Denny's locations
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% #calc minimum distance btwn a Denny's and La Quinta for each Denny's location. NTS: can just type the variables, don't need to add "long1 = ..."
+  arrange(distance)
+```
+
+
+### Exercise 8
+
+```{r}
+dn_lq_ak_min_dist %>% 
+  ggplot()
+```
+
+
+
+### Exercise 9
+
+
+
+
+### Exercise 10
+
+
+
+
+### Exercise 11
+
+
+
+
+
+### Exercise 12
 
 
 
