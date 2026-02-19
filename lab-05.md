@@ -128,14 +128,28 @@ dn_lq_ak <- dn_lq_ak %>%
   mutate(distance = haversine(long1 = longitude.x, lat1 = latitude.x, long2 = longitude.y, lat2 = latitude.y)) #add a distance variable using the haversine function
 ```
 
-### Exercise 7\*\*\*
+### Exercise 7
 
 ``` r
 dn_lq_ak_min_dist <- dn_lq_ak %>% 
   group_by(address.x) %>% #group by Denny's locations
   mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% #calc minimum distance btwn a Denny's and La Quinta for each Denny's location. NTS: can just type the variables, don't need to add "long1 = ..."
-  arrange(distance)
+  arrange(distance) %>% 
+  ungroup() %>% #ungroup so when I print df it returns only distance variable, not address.x
+  select(distance) #select column I want to print
+
+dn_lq_ak_min_dist #print df on seperate line
 ```
+
+    ## # A tibble: 6 × 1
+    ##   distance
+    ##      <dbl>
+    ## 1     2.04
+    ## 2     5.20
+    ## 3     6.00
+    ## 4   414.  
+    ## 5   416.  
+    ## 6   420.
 
 ### Exercise 8
 
@@ -144,7 +158,7 @@ dn_lq_ak_min_dist %>%
   ggplot()
 ```
 
-![](lab-05_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](lab-05_files/figure-gfm/plot-1.png)<!-- -->
 
 ### Exercise 9
 
