@@ -124,17 +124,6 @@ haversine <- function(long1, lat1, long2, lat2, round = 3) {
 ### Exercise 6
 
 ``` r
-dn_lq_ak %>% 
-  mutate()
+dn_lq_ak <- dn_lq_ak %>%
+  mutate(distance = haversine(long1 = longitude.x, lat1 = latitude.x, long2 = longitude.y, lat2 = latitude.y))
 ```
-
-    ## # A tibble: 6 × 11
-    ##   address.x     city.x state zip.x longitude.x latitude.x address.y city.y zip.y
-    ##   <chr>         <chr>  <chr> <chr>       <dbl>      <dbl> <chr>     <chr>  <chr>
-    ## 1 2900 Denali   Ancho… AK    99503       -150.       61.2 3501 Min… Ancho… 99503
-    ## 2 2900 Denali   Ancho… AK    99503       -150.       61.2 4920 Dal… Fairb… 99709
-    ## 3 3850 Debarr … Ancho… AK    99508       -150.       61.2 3501 Min… Ancho… 99503
-    ## 4 3850 Debarr … Ancho… AK    99508       -150.       61.2 4920 Dal… Fairb… 99709
-    ## 5 1929 Airport… Fairb… AK    99701       -148.       64.8 3501 Min… Ancho… 99503
-    ## 6 1929 Airport… Fairb… AK    99701       -148.       64.8 4920 Dal… Fairb… 99709
-    ## # ℹ 2 more variables: longitude.y <dbl>, latitude.y <dbl>
