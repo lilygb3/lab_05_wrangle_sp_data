@@ -303,4 +303,75 @@ dn_lq_tx_mindist %>%
 
 ### Exercise 11
 
+The distances between Denny’s locations and their nearest La Quinta’s in
+Georgia range from 0.02 - 73 km, with a median of 7 km and a mean of 14
+km. The distribution is right skewed, meaning most Denny’s are pretty
+close to a La Quinta, while a few locations are further away. The large
+standard deviation of 20 km suggests substantial variability in
+distances.
+
+``` r
+#filter dn and lq for GA
+dn_ga <- dn %>% filter(state == "GA")
+lq_ga <- lq %>% filter(state == "GA")
+
+#join df to get complete list of all possible pairings
+dn_lq_ga <- full_join(dn_ga, lq_ga, by = "state")
+```
+
+    ## Warning in full_join(dn_ga, lq_ga, by = "state"): Detected an unexpected many-to-many relationship between `x` and `y`.
+    ## ℹ Row 1 of `x` matches multiple rows in `y`.
+    ## ℹ Row 1 of `y` matches multiple rows in `x`.
+    ## ℹ If a many-to-many relationship is expected, set `relationship =
+    ##   "many-to-many"` to silence this warning.
+
+``` r
+#calculate all distances and minimum distance per Denny's
+dn_lq_ga_mindist <- dn_lq_ga %>%
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% 
+  group_by(address.x) %>% 
+  summarise(closest = min(distance))
+
+#summary stats
+summary(dn_lq_ga_mindist$closest)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##  0.0240  0.6777  7.7065 14.0458 13.8810 73.1200
+
+``` r
+sd(dn_lq_ga_mindist$closest)
+```
+
+    ## [1] 20.62056
+
+``` r
+#plot
+dn_lq_ga_mindist %>% 
+  ggplot(aes(x = closest)) +
+  geom_histogram(binwidth = 4, fill = "purple", color = "grey") +
+  labs(
+    title = "Distance from Denny's to Nearest La Quinta",
+    subtitle = "in Georgia",
+    x = "Distance (km)",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+![](lab-05_files/figure-gfm/dn-lq-ga-1.png)<!-- -->
+
 ### Exercise 12
+
+Mitch’s joke is most likely to hold true in Alaska. Even though there
+are only 3 locations, the distances from each Denny’s to the nearest La
+Quinta are consistently small with a low standard deviation, meaning all
+Denny’s are next to a La Quinta. In other states, there are much larger
+maximum distances and standard deviations, so the joke doesn’t hold as
+reliably as in Alaska.
+
+## optional stretch exercises - come back later!
+
+### Exercise 13
+
+### Exercise 14
