@@ -151,7 +151,8 @@ dn_lq_ak_mindist #print df on separate line
 There are 3 Denny’s locations in Alaska. The distances range from 2 -
 5.9 km, with a median of 5.1 km and a mean of 4.4 km. The distribution
 is slightly left skewed, meaning most locations are fairly close
-together with one slightly smaller distance.
+together with one slightly smaller distance. The standard deviation is
+about 2 km, which means there is very little variability in distances.
 
 ``` r
 summary(dn_lq_ak_mindist$closest)
@@ -171,7 +172,7 @@ dn_lq_ak_mindist %>%
   ggplot(aes(x = closest)) +
   geom_histogram(binwidth = .5, fill = "tomato", color = "grey") +
   labs(
-    title = "Denny's Locations and Closest La Quinta's",
+    title = "Distance from Denny's to Nearest La Quinta",
     subtitle = "in Alaska",
     x = "Distance (km)", 
     y = "Count"
@@ -179,7 +180,7 @@ dn_lq_ak_mindist %>%
   theme_minimal()
 ```
 
-![](lab-05_files/figure-gfm/plot-1.png)<!-- -->
+![](lab-05_files/figure-gfm/dn-lq-ak-mindist-plot-1.png)<!-- -->
 
 ### Exercise 9
 
@@ -187,7 +188,8 @@ The distances between Denny’s locations and their closest La Quinta’s in
 North Carolina range from 1.7 - 187.9 km, with a median of 53.4 km and a
 mean of 65.4 km. The distribution is right skewed, meaning many Denny’s
 are moderately close to a La Quinta, but a few locations are much
-farther away.
+farther away. The large standard deviation of 53.4 km means there is
+substantial variability in distances.
 
 ``` r
 #filter dn and lq for NC
@@ -230,7 +232,7 @@ dn_lq_nc_mindist %>%
   ggplot(aes(x = closest)) +
   geom_histogram(binwidth = 8, fill = "pink", color = "grey") +
   labs(
-    title = "Denny's Locations and Closest La Quinta's",
+    title = "Distance from Denny's to Nearest La Quinta",
     subtitle = "in North Carolina",
     x = "Distance (km)",
     y = "Count"
@@ -238,9 +240,66 @@ dn_lq_nc_mindist %>%
   theme_minimal()
 ```
 
-![](lab-05_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](lab-05_files/figure-gfm/dn-lq-nc-1.png)<!-- -->
 
 ### Exercise 10
+
+The distances between Denny’s locations and their nearest La Quinta’s in
+Texas range from 0.01 - 60 km, with a median of 3.3 km and a mean of 5.7
+km. The distribution is right skewed, meaning most Denny’s are very
+close to a La Quinta, but a few locations are farther away. The standard
+deviation is 8.8 km, meaning there is moderate variability in distances.
+
+``` r
+#filter dn and lq for TX
+dn_tx <- dn %>% filter(state == "TX")
+lq_tx <- lq %>% filter(state == "TX")
+
+#join df to get complete list of all possible pairings
+dn_lq_tx <- full_join(dn_tx, lq_tx, by = "state")
+```
+
+    ## Warning in full_join(dn_tx, lq_tx, by = "state"): Detected an unexpected many-to-many relationship between `x` and `y`.
+    ## ℹ Row 1 of `x` matches multiple rows in `y`.
+    ## ℹ Row 1 of `y` matches multiple rows in `x`.
+    ## ℹ If a many-to-many relationship is expected, set `relationship =
+    ##   "many-to-many"` to silence this warning.
+
+``` r
+#calculate all distances and minimum distance per Denny's
+dn_lq_tx_mindist <- dn_lq_tx %>%
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% 
+  group_by(address.x) %>% 
+  summarise(closest = min(distance))
+
+#summary stats
+summary(dn_lq_tx_mindist$closest)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##  0.0160  0.7305  3.3715  5.7918  6.6303 60.5820
+
+``` r
+sd(dn_lq_tx_mindist$closest)
+```
+
+    ## [1] 8.830715
+
+``` r
+#plot
+dn_lq_tx_mindist %>% 
+  ggplot(aes(x = closest)) +
+  geom_histogram(binwidth = 2, fill = "blue", color = "grey") +
+  labs(
+    title = "Distance from Denny's to Nearest La Quinta",
+    subtitle = "in Texas",
+    x = "Distance (km)",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+![](lab-05_files/figure-gfm/dn-lq-tx-1.png)<!-- -->
 
 ### Exercise 11
 
