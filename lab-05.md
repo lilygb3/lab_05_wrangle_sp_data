@@ -131,33 +131,42 @@ dn_lq_ak <- dn_lq_ak %>%
 ### Exercise 7
 
 ``` r
-dn_lq_ak_min_dist <- dn_lq_ak %>% 
+dn_lq_ak_mindist <- dn_lq_ak %>% 
   group_by(address.x) %>% #group by Denny's locations
   mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% #calc minimum distance btwn a Denny's and La Quinta for each Denny's location. NTS: can just type the variables, don't need to add "long1 = ..."
-  arrange(distance) %>% 
-  ungroup() %>% #ungroup so when I print df it returns only distance variable, not address.x
-  select(distance) #select column I want to print
+  summarize(closest = min(distance))
 
-dn_lq_ak_min_dist #print df on seperate line
+dn_lq_ak_mindist #print df on separate line
 ```
 
-    ## # A tibble: 6 × 1
-    ##   distance
-    ##      <dbl>
-    ## 1     2.04
-    ## 2     5.20
-    ## 3     6.00
-    ## 4   414.  
-    ## 5   416.  
-    ## 6   420.
-
-\*add mutate min distance to find minimum distance!
+    ## # A tibble: 3 × 2
+    ##   address.x        closest
+    ##   <chr>              <dbl>
+    ## 1 1929 Airport Way    5.20
+    ## 2 2900 Denali         2.04
+    ## 3 3850 Debarr Road    6.00
 
 ### Exercise 8
 
+There are 3 Denny’s locations in Alaska. The distances range from 2 - 6
+km, with an average of 4 km.
+
 ``` r
-dn_lq_ak_min_dist %>% 
-  ggplot(aes(x = distance)) +
+summary(dn_lq_ak_mindist$closest)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##   2.035   3.616   5.197   4.410   5.598   5.998
+
+``` r
+sd(dn_lq_ak_mindist$closest)
+```
+
+    ## [1] 2.09544
+
+``` r
+dn_lq_ak_mindist %>% 
+  ggplot(aes(x = closest)) +
   geom_density() +
   labs(title = "Distribution of Minimum Distances", subtitle = "Between Denny's and La Quinta Locations", x = "Minimum Distance (miles)", y = "Density")
 ```

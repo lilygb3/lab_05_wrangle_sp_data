@@ -94,22 +94,27 @@ dn_lq_ak <- dn_lq_ak %>%
 ### Exercise 7
 
 ```{r min-dist}
-dn_lq_ak_min_dist <- dn_lq_ak %>% 
+dn_lq_ak_mindist <- dn_lq_ak %>% 
   group_by(address.x) %>% #group by Denny's locations
   mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% #calc minimum distance btwn a Denny's and La Quinta for each Denny's location. NTS: can just type the variables, don't need to add "long1 = ..."
-  arrange(distance) %>% 
-  ungroup() %>% #ungroup so when I print df it returns only distance variable, not address.x
-  select(distance) #select column I want to print
+  summarize(closest = min(distance))
 
-dn_lq_ak_min_dist #print df on seperate line
+dn_lq_ak_mindist #print df on separate line
 ```
-*add mutate min distance to find minimum distance!
 
 ### Exercise 8
 
+There are 3 Denny's locations in Alaska. The distances range from 2 - 6 km, with an average of 4 km. 
+
+```{r}
+summary(dn_lq_ak_mindist$closest)
+sd(dn_lq_ak_mindist$closest)
+```
+
+
 ```{r plot}
-dn_lq_ak_min_dist %>% 
-  ggplot(aes(x = distance)) +
+dn_lq_ak_mindist %>% 
+  ggplot(aes(x = closest)) +
   geom_density() +
   labs(title = "Distribution of Minimum Distances", subtitle = "Between Denny's and La Quinta Locations", x = "Minimum Distance (miles)", y = "Density")
 ```
