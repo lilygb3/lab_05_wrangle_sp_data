@@ -114,11 +114,11 @@ sd(dn_lq_ak_mindist$closest)
 ```{r plot}
 dn_lq_ak_mindist %>% 
   ggplot(aes(x = closest)) +
-  geom_histogram(binwidth = 1) +
+  geom_histogram(binwidth = .5, fill = "tomato", color = "grey") +
   labs(
     title = "Denny's Locations and Closest La Quinta's",
     subtitle = "in Alaska",
-    x = "Distance (km)",
+    x = "Distance (km)", 
     y = "Count"
   ) +
   theme_minimal()
@@ -128,22 +128,16 @@ dn_lq_ak_mindist %>%
 
 ```{r}
 #filter dn and lq for NC
-dn_nc <- dn %>% 
-  filter(state == "NC")
-
-lq_nc <- lq %>% 
-  filter(state == "NC")
+dn_nc <- dn %>% filter(state == "NC")
+lq_nc <- lq %>% filter(state == "NC")
 
 #join df to get complete list of all possible pairings
 dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
 
-#calculate all distances
-dn_lq_nc <- dn_lq_nc %>%
-  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
-
-#find minimum distances
-dn_lq_nc_mindist <- dn_lq_nc %>% 
+#calculate all distances and minimum distance per Denny's
+dn_lq_nc_mindist <- dn_lq_nc %>%
   mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% 
+  group_by(address.x) %>% 
   summarise(closest = min(distance))
 
 #summary stats
@@ -153,7 +147,7 @@ sd(dn_lq_nc_mindist$closest)
 #plot
 dn_lq_nc_mindist %>% 
   ggplot(aes(x = closest)) +
-  geom_histogram() +
+  geom_histogram(binwidth = 8, fill = "pink", color = "grey") +
   labs(
     title = "Denny's Locations and Closest La Quinta's",
     subtitle = "in North Carolina",

@@ -167,11 +167,11 @@ sd(dn_lq_ak_mindist$closest)
 ``` r
 dn_lq_ak_mindist %>% 
   ggplot(aes(x = closest)) +
-  geom_histogram(binwidth = 1) +
+  geom_histogram(binwidth = .5, fill = "tomato", color = "grey") +
   labs(
     title = "Denny's Locations and Closest La Quinta's",
     subtitle = "in Alaska",
-    x = "Distance (km)",
+    x = "Distance (km)", 
     y = "Count"
   ) +
   theme_minimal()
@@ -183,11 +183,8 @@ dn_lq_ak_mindist %>%
 
 ``` r
 #filter dn and lq for NC
-dn_nc <- dn %>% 
-  filter(state == "NC")
-
-lq_nc <- lq %>% 
-  filter(state == "NC")
+dn_nc <- dn %>% filter(state == "NC")
+lq_nc <- lq %>% filter(state == "NC")
 
 #join df to get complete list of all possible pairings
 dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
@@ -200,13 +197,10 @@ dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
     ##   "many-to-many"` to silence this warning.
 
 ``` r
-#calculate all distances
-dn_lq_nc <- dn_lq_nc %>%
-  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
-
-#find minimum distances
-dn_lq_nc_mindist <- dn_lq_nc %>% 
+#calculate all distances and minimum distance per Denny's
+dn_lq_nc_mindist <- dn_lq_nc %>%
   mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% 
+  group_by(address.x) %>% 
   summarise(closest = min(distance))
 
 #summary stats
@@ -214,19 +208,19 @@ summary(dn_lq_nc_mindist$closest)
 ```
 
     ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-    ##   1.779   1.779   1.779   1.779   1.779   1.779
+    ##   1.779  22.388  53.456  65.444  93.985 187.935
 
 ``` r
 sd(dn_lq_nc_mindist$closest)
 ```
 
-    ## [1] NA
+    ## [1] 53.42398
 
 ``` r
 #plot
 dn_lq_nc_mindist %>% 
   ggplot(aes(x = closest)) +
-  geom_histogram() +
+  geom_histogram(binwidth = 8, fill = "pink", color = "grey") +
   labs(
     title = "Denny's Locations and Closest La Quinta's",
     subtitle = "in North Carolina",
@@ -235,8 +229,6 @@ dn_lq_nc_mindist %>%
   ) +
   theme_minimal()
 ```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 
 ![](lab-05_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
