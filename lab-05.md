@@ -189,7 +189,6 @@ dn_nc <- dn %>%
 lq_nc <- lq %>% 
   filter(state == "NC")
 
-
 #join df to get complete list of all possible pairings
 dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
 ```
@@ -202,13 +201,44 @@ dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
 
 ``` r
 #calculate all distances
+dn_lq_nc <- dn_lq_nc %>%
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y))
 
+#find minimum distances
+dn_lq_nc_mindist <- dn_lq_nc %>% 
+  mutate(distance = haversine(longitude.x, latitude.x, longitude.y, latitude.y)) %>% 
+  summarise(closest = min(distance))
 
-#find min distances
-
-
-#plot and ss
+#summary stats
+summary(dn_lq_nc_mindist$closest)
 ```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##   1.779   1.779   1.779   1.779   1.779   1.779
+
+``` r
+sd(dn_lq_nc_mindist$closest)
+```
+
+    ## [1] NA
+
+``` r
+#plot
+dn_lq_nc_mindist %>% 
+  ggplot(aes(x = closest)) +
+  geom_histogram() +
+  labs(
+    title = "Denny's Locations and Closest La Quinta's",
+    subtitle = "in North Carolina",
+    x = "Distance (km)",
+    y = "Count"
+  ) +
+  theme_minimal()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+
+![](lab-05_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ### Exercise 10
 
