@@ -148,8 +148,10 @@ dn_lq_ak_mindist #print df on separate line
 
 ### Exercise 8
 
-There are 3 Denny’s locations in Alaska. The distances range from 2 - 6
-km, with an average of 4 km.
+There are 3 Denny’s locations in Alaska. The distances range from 2 -
+5.9 km, with a median of 5.1 km and a mean of 4.4 km. The distribution
+is slightly left skewed, meaning most locations are fairly close
+together with one slightly smaller distance.
 
 ``` r
 summary(dn_lq_ak_mindist$closest)
@@ -180,6 +182,12 @@ dn_lq_ak_mindist %>%
 ![](lab-05_files/figure-gfm/plot-1.png)<!-- -->
 
 ### Exercise 9
+
+The distances between Denny’s locations and their closest La Quinta’s in
+North Carolina range from 1.7 - 187.9 km, with a median of 53.4 km and a
+mean of 65.4 km. The distribution is right skewed, meaning many Denny’s
+are moderately close to a La Quinta, but a few locations are much
+farther away.
 
 ``` r
 #filter dn and lq for NC
