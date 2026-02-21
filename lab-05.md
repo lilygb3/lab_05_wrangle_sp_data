@@ -167,13 +167,48 @@ sd(dn_lq_ak_mindist$closest)
 ``` r
 dn_lq_ak_mindist %>% 
   ggplot(aes(x = closest)) +
-  geom_density() +
-  labs(title = "Distribution of Minimum Distances", subtitle = "Between Denny's and La Quinta Locations", x = "Minimum Distance (miles)", y = "Density")
+  geom_histogram(binwidth = 1) +
+  labs(
+    title = "Denny's Locations and Closest La Quinta's",
+    subtitle = "in Alaska",
+    x = "Distance (km)",
+    y = "Count"
+  ) +
+  theme_minimal()
 ```
 
 ![](lab-05_files/figure-gfm/plot-1.png)<!-- -->
 
 ### Exercise 9
+
+``` r
+#filter dn and lq for NC
+dn_nc <- dn %>% 
+  filter(state == "NC")
+
+lq_nc <- lq %>% 
+  filter(state == "NC")
+
+
+#join df to get complete list of all possible pairings
+dn_lq_nc <- full_join(dn_nc, lq_nc, by = "state")
+```
+
+    ## Warning in full_join(dn_nc, lq_nc, by = "state"): Detected an unexpected many-to-many relationship between `x` and `y`.
+    ## ℹ Row 1 of `x` matches multiple rows in `y`.
+    ## ℹ Row 1 of `y` matches multiple rows in `x`.
+    ## ℹ If a many-to-many relationship is expected, set `relationship =
+    ##   "many-to-many"` to silence this warning.
+
+``` r
+#calculate all distances
+
+
+#find min distances
+
+
+#plot and ss
+```
 
 ### Exercise 10
 
